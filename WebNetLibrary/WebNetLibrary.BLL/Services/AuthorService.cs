@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using WebNetLibrary.BLL.Interfaces;
 using WebNetLibrary.BLL.Services.Abstract;
 using WebNetLibrary.Common.Contracts.Author;
@@ -13,27 +14,43 @@ public class AuthorService : BaseService, IAuthorService
     {
     }
     
-    public async Task<AuthorDto> Create(CreateAuthorDto dto)
+    public async Task<long> Create(CreateAuthorDto dto)
     {
         var author = Mapper.Map<Author>(dto);
         var createdAuthor = Context.Authors.Add(author).Entity;
         await Context.SaveChangesAsync();
 
-        return Mapper.Map<AuthorDto>(createdAuthor);
+        return createdAuthor.Id;
     }
 
-    public Task<AuthorDto> Update(AuthorDto dto)
+    public async Task Update(AuthorDto dto)
     {
-        throw new NotImplementedException();
+        var author = await GetInternal(dto.Id);
+        author = Mapper.Map(dto, author);
+        Context.Authors.Update(author);
+
+        await Context.SaveChangesAsync();
     }
 
-    public Task Delete(long id)
+    public async Task Delete(long id)
     {
-        throw new NotImplementedException();
+        var author = await GetInternal(id);
+        Context.Authors.Remove(author);
+        await Context.SaveChangesAsync();
     }
 
-    public Task<List<AuthorDto>> Get()
+    public List<AuthorDto> Get()
     {
-        throw new NotImplementedException();
+        return Mapper.Map<List<AuthorDto>>(Context.Authors);
+    }
+
+    public async Task<AuthorDto?> Get(long id)
+    {
+        return Mapper.Map<AuthorDto>(await GetInternal(id));
+    }
+
+    private async Task<Author> GetInternal(long id)
+    {
+        return await Context.Authors.FirstOrDefaultAsync(a => a.Id == id) ?? throw new ArgumentException(nameof(id));
     }
 }

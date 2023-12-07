@@ -12,6 +12,9 @@ namespace WebNetLibrary.API.Extensions
         public static void RegisterCustomServices(this IServiceCollection services)
         {
             services.AddScoped<IAuthorService, AuthorService>();
+            services.AddScoped<IThemeService, ThemeService>();
+            services.AddScoped<IBookService, BookService>();
+            services.AddScoped<IPortfolioService, PortfolioService>();
         }
 
         public static void AddLibraryContext(this IServiceCollection services, IConfiguration configuration)

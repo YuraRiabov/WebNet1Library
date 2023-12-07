@@ -2,7 +2,7 @@
 
 namespace WebNetLibrary.BLL.Interfaces;
 
-public interface IAuthorService : IEntityMutationService<AuthorDto, CreateAuthorDto, AuthorDto>
+public interface IAuthorService : IEntityService<AuthorDto, CreateAuthorDto, AuthorDto>
 {
-    public Task<List<AuthorDto>> Get();
+    public List<AuthorDto> Get();
 }

@@ -2,7 +2,7 @@
 
 namespace WebNetLibrary.BLL.Interfaces;
 
-public interface IThemeService : IEntityMutationService<ThemeDto, CreateThemeDto, ThemeDto>
+public interface IThemeService : IEntityService<ThemeDto, CreateThemeDto, ThemeDto>
 {
-    public Task<List<ThemeDto>> Get();
+    public List<ThemeDto> Get();
 }
