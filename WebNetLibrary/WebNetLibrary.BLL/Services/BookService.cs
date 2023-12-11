@@ -72,15 +72,15 @@ public class BookService : BaseService, IBookService
         return Mapper.Map<BookDto>(book);
     }
 
-    public async Task<List<BookDto>> Search(string nameFilter, List<long> authorIds, List<long> themeIds)
+    public async Task<List<BookDto>> Search(string? nameFilter, List<long>? authorIds, List<long>? themeIds)
     {
         var books = await Context.Books
             .Include(b => b.Authors)
             .Include(b => b.Themes)
             .Where(b =>
-                b.Name.Contains(nameFilter) ||
-                b.Authors.Any(a => authorIds.Contains(a.AuthorId)) ||
-                b.Themes.Any(t => themeIds.Contains(t.ThemeId))
+                (nameFilter == null || b.Name.Contains(nameFilter)) &&
+                (authorIds == null || authorIds.Count == 0 || b.Authors.Any(a => authorIds.Contains(a.AuthorId))) &&
+                (themeIds == null || themeIds.Count == 0 || b.Themes.Any(t => themeIds.Contains(t.ThemeId)))
             ).ToListAsync();
         return Mapper.Map<List<BookDto>>(books);
     }

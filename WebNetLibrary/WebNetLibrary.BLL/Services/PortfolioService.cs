@@ -50,6 +50,11 @@ public class PortfolioService : BaseService, IPortfolioService
         return true;
     }
 
+    public async Task<List<long>> GetBookIds(long userId)
+    {
+        return await Context.UserBooks.Where(ub => ub.UserId == userId).Select(ub => ub.BookId).ToListAsync();
+    }
+
     private async Task<UserBook?> GetUserBook(long userId, long bookId)
     {
         return await Context.UserBooks.FirstOrDefaultAsync(ub => ub.UserId == userId && ub.BookId == bookId);
