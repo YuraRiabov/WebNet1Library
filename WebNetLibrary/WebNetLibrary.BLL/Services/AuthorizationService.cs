@@ -23,6 +23,7 @@ public class AuthorizationService : IAuthorizationService
     {
         _options = options.Value;
         _httpClient = httpClient;
+        
         SetAuthorizationHeader();
     }
     public async Task<bool> CreateUser(CreateUserDto dto)
@@ -36,13 +37,33 @@ public class AuthorizationService : IAuthorizationService
 
         var response = await CreateUserWithoutRetry(request);
 
-        if (!response.IsSuccessStatusCode)
+        if (response.StatusCode == HttpStatusCode.Unauthorized)
         {
             await RefreshApplicationToken();
             response = await CreateUserWithoutRetry(request);
         }
         
         return response.IsSuccessStatusCode;
+    }
+
+    public async Task<TokenResponse?> GetToken(GetTokenDto dto)
+    {
+        var request = new GetUserTokenAuth0Request
+        {
+            Audience = _options.UserManagementAudience,
+            ClientId = _options.ClientId,
+            ClientSecret = _options.ClientSecret,
+            Password = dto.Password,
+            Username = dto.Username
+        };
+
+        var uri = _options.Domain + GetTokenEndpoint;
+        var tokenResponse = await _httpClient.PostAsJsonAsync(uri, request);
+        if (!tokenResponse.IsSuccessStatusCode)
+        {
+            return null;
+        }
+        return await tokenResponse.Content.ReadFromJsonAsync<TokenResponse>();
     }
 
     private async Task RefreshApplicationToken()
@@ -71,6 +92,9 @@ public class AuthorizationService : IAuthorizationService
 
     private void SetAuthorizationHeader()
     {
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApplicationToken);
+        if (ApplicationToken != null)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ApplicationToken);
+        }
     }
 }

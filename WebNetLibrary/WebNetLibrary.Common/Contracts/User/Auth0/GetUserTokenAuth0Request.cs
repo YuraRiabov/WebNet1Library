@@ -4,8 +4,8 @@ namespace WebNetLibrary.Common.Contracts.User.Auth0;
 
 public class GetUserTokenAuth0Request
 {
-    [JsonPropertyName("grant_type")]
-    public required string GrantType { get; set; }
+    [JsonPropertyName("grant_type")] 
+    public string GrantType { get; set; } = "password";
 
     [JsonPropertyName("username")]
     public required string Username { get; set; }
@@ -22,8 +22,9 @@ public class GetUserTokenAuth0Request
     [JsonPropertyName("audience")]
     public string? Audience { get; set; }
 
-    public GetUserTokenAuth0Request()
-    {
-        
-    }
+    [JsonPropertyName("scope")] 
+    public string? Scope { get; set; } = "read:catalogue";
+
+    [JsonPropertyName("connection")]
+    public string Connection => "Username-Password-Authentication";
 }

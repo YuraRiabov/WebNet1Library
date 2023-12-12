@@ -34,4 +34,21 @@ public class UserService : BaseService, IUserService
 
         return createdUser.Id;
     }
+
+    public async Task<TokenDto> GetToken(GetTokenDto dto)
+    {
+        var tokenResponse = await _authorizationService.GetToken(dto);
+        if (tokenResponse == null)
+        {
+            throw new ArgumentException();
+        }
+
+        var userId = Context.Users.First(u => u.Name == dto.Username).Id;
+        return new TokenDto
+        {
+            AccessToken = tokenResponse.AccessToken,
+            RefreshToken = tokenResponse.RefreshToken!,
+            UserId = userId
+        };
+    }
 }
