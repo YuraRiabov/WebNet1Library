@@ -20,8 +20,8 @@ public class PortfolioController : ControllerBase
         return Ok(await _portfolioService.GetBookIds(userId));
     }
     
-    [HttpPost("{userId}/portfolio")]
-    public async Task<IActionResult> Add(long userId, [FromBody] long bookId)
+    [HttpPost("{userId}/portfolio/{bookId}")]
+    public async Task<IActionResult> Add(long userId, long bookId)
     {
         var result = await _portfolioService.Add(userId, bookId);
         if (result)
@@ -32,8 +32,8 @@ public class PortfolioController : ControllerBase
         return BadRequest();
     }
     
-    [HttpDelete("{userId}/portfolio")]
-    public async Task<IActionResult> Get(long userId, [FromBody] long bookId)
+    [HttpDelete("{userId}/portfolio/{bookId}")]
+    public async Task<IActionResult> Get(long userId, long bookId)
     {
         var result = await _portfolioService.Remove(userId, bookId);
         if (result)

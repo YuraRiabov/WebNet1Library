@@ -10,27 +10,23 @@ namespace WebNetLibrary.BLL.Services;
 public class PortfolioService : BaseService, IPortfolioService
 {
     private readonly int _maxPortfolioSize = 10;
-    private readonly IBookService _bookService;
 
-    public PortfolioService(LibraryContext context, IMapper mapper, IBookService bookService) : base(context, mapper)
+    public PortfolioService(LibraryContext context, IMapper mapper) : base(context, mapper)
     {
-        _bookService = bookService;
     }
 
     public async Task<bool> Add(long userId, long bookId)
     {
         var currentPortfolioSize = await GetCurrentPortfolioSize(userId);
-        var bookToAdd = await _bookService.Get(bookId);
-        if (currentPortfolioSize > _maxPortfolioSize || bookToAdd == null)
+        var bookToAdd = await Context.Books.Include(b => b.Authors).FirstOrDefaultAsync(b => b.Id == bookId);
+        var user = await Context.Users.Include(user => user.Books).FirstOrDefaultAsync(u => u.Id == userId);
+        if (currentPortfolioSize >= _maxPortfolioSize || bookToAdd == null || user == null)
         {
             return false;
         }
 
-        Context.UserBooks.Add(new UserBook
-        {
-            UserId = userId,
-            BookId = bookId
-        });
+        user.Books.Add(new UserBook { Book = bookToAdd });
+        
         await Context.SaveChangesAsync();
 
         return true;

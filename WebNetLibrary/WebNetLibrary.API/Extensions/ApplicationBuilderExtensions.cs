@@ -9,7 +9,10 @@ namespace WebNetLibrary.API.Extensions
         {
             using var scope = app.ApplicationServices.GetService<IServiceScopeFactory>()?.CreateScope();
             using var context = scope?.ServiceProvider.GetRequiredService<LibraryContext>();
-            context?.Database.Migrate();
+            if (context.Database.IsRelational())
+            {
+                context.Database.Migrate();
+            }
         }
     }
 }

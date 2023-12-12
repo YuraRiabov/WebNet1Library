@@ -2,6 +2,7 @@
 using WebNetLibrary.BLL.Interfaces;
 using WebNetLibrary.BLL.Services.Abstract;
 using WebNetLibrary.Common.Contracts.User;
+using WebNetLibrary.Common.Exceptions;
 using WebNetLibrary.DAL.Context;
 using WebNetLibrary.DAL.Entities;
 
@@ -21,7 +22,7 @@ public class UserService : BaseService, IUserService
         var authorizeUserResponse = await _authorizationService.CreateUser(dto);
         if (!authorizeUserResponse)
         {
-            throw new ArgumentException();
+            throw new InvalidCredentialsException();
         }
 
         var user = new User
@@ -40,7 +41,7 @@ public class UserService : BaseService, IUserService
         var tokenResponse = await _authorizationService.GetToken(dto);
         if (tokenResponse == null)
         {
-            throw new ArgumentException();
+            throw new InvalidCredentialsException();
         }
 
         var userId = Context.Users.First(u => u.Name == dto.Username).Id;

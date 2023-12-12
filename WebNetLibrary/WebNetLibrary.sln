@@ -8,6 +8,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebNetLibrary.BLL", "WebNet
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebNetLibrary.Common", "WebNetLibrary.Common\WebNetLibrary.Common.csproj", "{A2630517-F623-4853-AEDF-8A624C37CF6F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebNetLibrary.API.Tests.Integration", "WebNetLibrary.API.Tests.Integration\WebNetLibrary.API.Tests.Integration.csproj", "{24AD66F3-CF4E-4CC8-9BCD-000146C82F0F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebNetLibrary.BLL.Tests.Unit", "WebNetLibrary.BLL.Tests.Unit\WebNetLibrary.BLL.Tests.Unit.csproj", "{02ACA88D-6C5E-4D03-ADB2-1FFC6DDD7F85}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +34,13 @@ Global
 		{A2630517-F623-4853-AEDF-8A624C37CF6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2630517-F623-4853-AEDF-8A624C37CF6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2630517-F623-4853-AEDF-8A624C37CF6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24AD66F3-CF4E-4CC8-9BCD-000146C82F0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24AD66F3-CF4E-4CC8-9BCD-000146C82F0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24AD66F3-CF4E-4CC8-9BCD-000146C82F0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24AD66F3-CF4E-4CC8-9BCD-000146C82F0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02ACA88D-6C5E-4D03-ADB2-1FFC6DDD7F85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02ACA88D-6C5E-4D03-ADB2-1FFC6DDD7F85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02ACA88D-6C5E-4D03-ADB2-1FFC6DDD7F85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02ACA88D-6C5E-4D03-ADB2-1FFC6DDD7F85}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

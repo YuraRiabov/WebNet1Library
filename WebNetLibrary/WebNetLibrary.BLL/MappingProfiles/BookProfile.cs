@@ -14,7 +14,7 @@ public class BookProfile: Profile
             .ForMember(b => b.Themes, opt 
                 => opt.MapFrom(book => book.Themes.Select(a => a.Theme)));
         
-        CreateMap<UpdateBookDto, BookDto>();
-        CreateMap<CreateBookDto, BookDto>();
+        CreateMap<UpdateBookDto, Book>();
+        CreateMap<CreateBookDto, Book>();
     }
 }

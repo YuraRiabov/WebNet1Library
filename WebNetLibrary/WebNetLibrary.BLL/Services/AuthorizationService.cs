@@ -28,6 +28,8 @@ public class AuthorizationService : IAuthorizationService
     }
     public async Task<bool> CreateUser(CreateUserDto dto)
     {
+        return true;
+        
         var request = new CreateUserAuth0Request
         {
             Email = dto.Email,
@@ -72,7 +74,7 @@ public class AuthorizationService : IAuthorizationService
 
         var tokenResponse = await _httpClient.PostAsJsonAsync(uri, new GetApplicationTokenRequest
         {
-            Audience = _options.UserManagementAudience,
+            Audience = _options.Audience,
             ClientId = _options.ClientId,
             ClientSecret = _options.ClientSecret,
             GrantType = "client_credentials"

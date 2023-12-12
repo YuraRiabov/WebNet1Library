@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using WebNetLibrary.BLL.Interfaces;
 using WebNetLibrary.BLL.Services.Abstract;
 using WebNetLibrary.Common.Contracts.Book;
+using WebNetLibrary.Common.Exceptions;
 using WebNetLibrary.DAL.Context;
 using WebNetLibrary.DAL.Entities;
 
@@ -20,17 +21,22 @@ public class BookService : BaseService, IBookService
 
     public async Task<long> Create(CreateBookDto dto)
     {
-        if (!ValidateBookAuthors(dto.AuthorIds) || !ValidateBookThemes(dto.ThemeIds))
+        if (!ValidateBookAuthors(dto.AuthorIds))
         {
-            throw new ArgumentException();
+            throw new EntityNotFoundException<Author>();
+        }
+        
+        if (!ValidateBookThemes(dto.AuthorIds))
+        {
+            throw new EntityNotFoundException<Theme>();
         }
         
         var book = Mapper.Map<Book>(dto);
         var createdBook = Context.Books.Add(book).Entity;
-        await Context.SaveChangesAsync();
+            
+        book.Authors = GetBookAuthors(dto.AuthorIds);
+        book.Themes = GetBookThemes(dto.ThemeIds);
         
-        Context.BookAuthors.AddRange(CreateBookAuthors(createdBook.Id, dto.AuthorIds));
-        Context.BookThemes.AddRange(CreateBookThemes(createdBook.Id, dto.ThemeIds));
         await Context.SaveChangesAsync();
 
         return createdBook.Id;
@@ -38,17 +44,22 @@ public class BookService : BaseService, IBookService
 
     public async Task Update(UpdateBookDto dto)
     {
-        if (!ValidateBookAuthors(dto.AuthorIds) || !ValidateBookThemes(dto.ThemeIds))
+        if (!ValidateBookAuthors(dto.AuthorIds))
         {
-            throw new ArgumentException();
+            throw new EntityNotFoundException<Author>();
+        }
+        
+        if (!ValidateBookThemes(dto.AuthorIds))
+        {
+            throw new EntityNotFoundException<Theme>();
         }
         
         var book = await GetInternal(dto.Id);
         book = Mapper.Map(dto, book);
         Context.Books.Update(book);
 
-        UpdateBookAuthors(dto);
-        UpdateBookThemes(dto);
+        book.Authors = GetBookAuthors(dto.AuthorIds);
+        book.Themes = GetBookThemes(dto.ThemeIds);
 
         await Context.SaveChangesAsync();
     }
@@ -72,59 +83,38 @@ public class BookService : BaseService, IBookService
         return Mapper.Map<BookDto>(book);
     }
 
-    public async Task<List<BookDto>> Search(string? nameFilter, List<long>? authorIds, List<long>? themeIds)
+    public List<BookDto> Search(string? nameFilter, List<long>? authorIds, List<long>? themeIds)
     {
-        var books = await Context.Books
+        var books = Context.Books
             .Include(b => b.Authors)
             .Include(b => b.Themes)
             .Where(b =>
                 (nameFilter == null || b.Name.Contains(nameFilter)) &&
                 (authorIds == null || authorIds.Count == 0 || b.Authors.Any(a => authorIds.Contains(a.AuthorId))) &&
                 (themeIds == null || themeIds.Count == 0 || b.Themes.Any(t => themeIds.Contains(t.ThemeId)))
-            ).ToListAsync();
+            ).ToList();
         return Mapper.Map<List<BookDto>>(books);
     }
 
     private async Task<Book> GetInternal(long id)
     {
-        return await Context.Books.FirstOrDefaultAsync(a => a.Id == id) ?? throw new ArgumentException(nameof(id));
+        return await Context.Books.FirstOrDefaultAsync(a => a.Id == id) ?? throw new EntityNotFoundException<Book>();
     }
 
-    private IEnumerable<BookAuthor> CreateBookAuthors(long bookId, List<long> authorIds)
+    private List<BookAuthor> GetBookAuthors(List<long> authorIds)
     {
-        return authorIds.Select(id => new BookAuthor
-        {
-            AuthorId = id,
-            BookId = bookId
-        });
+        return Context.Authors
+            .Where(a => authorIds.Contains(a.Id))
+            .Select(author => new BookAuthor { Author = author })
+            .ToList();
     }
     
-    private IEnumerable<BookTheme> CreateBookThemes(long bookId, List<long> themeIds)
+    private List<BookTheme> GetBookThemes(List<long> themeIds)
     {
-        return themeIds.Select(id => new BookTheme
-        {
-            ThemeId = id,
-            BookId = bookId
-        });
-    }
-    private void UpdateBookThemes(UpdateBookDto dto)
-    {
-        var currentThemes = Context.BookThemes.Where(bt => bt.BookId == dto.Id);
-        if (!currentThemes.Select(bt => bt.ThemeId).SequenceEqual(dto.ThemeIds))
-        {
-            Context.BookThemes.RemoveRange(currentThemes);
-            Context.BookThemes.AddRange(CreateBookThemes(dto.Id, dto.ThemeIds));
-        }
-    }
-
-    private void UpdateBookAuthors(UpdateBookDto dto)
-    {
-        var currentAuthors = Context.BookAuthors.Where(ba => ba.BookId == dto.Id);
-        if (!currentAuthors.Select(ba => ba.AuthorId).SequenceEqual(dto.AuthorIds))
-        {
-            Context.BookAuthors.RemoveRange(currentAuthors);
-            Context.BookAuthors.AddRange(CreateBookAuthors(dto.Id, dto.AuthorIds));
-        }
+        return Context.Themes
+            .Where(t => themeIds.Contains(t.Id))
+            .Select(theme => new BookTheme { Theme = theme })
+            .ToList();
     }
 
     private bool ValidateBookAuthors(List<long> authorIds)

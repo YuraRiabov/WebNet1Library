@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using WebNetLibrary.BLL.Interfaces;
 using WebNetLibrary.BLL.Services.Abstract;
 using WebNetLibrary.Common.Contracts.Theme;
+using WebNetLibrary.Common.Exceptions;
 using WebNetLibrary.DAL.Context;
 using WebNetLibrary.DAL.Entities;
 
@@ -51,6 +52,6 @@ public class ThemeService: BaseService, IThemeService
 
     private async Task<Theme> GetInternal(long id)
     {
-        return await Context.Themes.FirstOrDefaultAsync(a => a.Id == id) ?? throw new ArgumentException(nameof(id));
+        return await Context.Themes.FirstOrDefaultAsync(a => a.Id == id) ?? throw new EntityNotFoundException<Theme>();
     }
 }
