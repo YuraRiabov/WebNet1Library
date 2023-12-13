@@ -1,0 +1,638 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "title": "WebNetLibrary.API",
+      "version": "1.0"
+    },
+    "paths": {
+      "/authors": {
+        "get": {
+          "tags": [
+            "Authors"
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "Authors"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateAuthorDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateAuthorDto"
+                }
+              },
+              "application/*+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateAuthorDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        },
+        "put": {
+          "tags": [
+            "Authors"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthorDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthorDto"
+                }
+              },
+              "application/*+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthorDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/authors/{id}": {
+        "get": {
+          "tags": [
+            "Authors"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "style": "simple",
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "Authors"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "style": "simple",
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/books": {
+        "get": {
+          "tags": [
+            "Books"
+          ],
+          "parameters": [
+            {
+              "name": "nameFilter",
+              "in": "query",
+              "style": "form",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "authorsFilter",
+              "in": "query",
+              "style": "form",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            },
+            {
+              "name": "themesFilter",
+              "in": "query",
+              "style": "form",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "Books"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateBookDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateBookDto"
+                }
+              },
+              "application/*+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateBookDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        },
+        "put": {
+          "tags": [
+            "Books"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateBookDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateBookDto"
+                }
+              },
+              "application/*+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateBookDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/books/{id}": {
+        "get": {
+          "tags": [
+            "Books"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "style": "simple",
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "Books"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "style": "simple",
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/users/{userId}/portfolio": {
+        "get": {
+          "tags": [
+            "Portfolio"
+          ],
+          "parameters": [
+            {
+              "name": "userId",
+              "in": "path",
+              "required": true,
+              "style": "simple",
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/users/{userId}/portfolio/{bookId}": {
+        "post": {
+          "tags": [
+            "Portfolio"
+          ],
+          "parameters": [
+            {
+              "name": "userId",
+              "in": "path",
+              "required": true,
+              "style": "simple",
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            },
+            {
+              "name": "bookId",
+              "in": "path",
+              "required": true,
+              "style": "simple",
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "Portfolio"
+          ],
+          "parameters": [
+            {
+              "name": "userId",
+              "in": "path",
+              "required": true,
+              "style": "simple",
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            },
+            {
+              "name": "bookId",
+              "in": "path",
+              "required": true,
+              "style": "simple",
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/themes": {
+        "get": {
+          "tags": [
+            "Themes"
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "Themes"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateThemeDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateThemeDto"
+                }
+              },
+              "application/*+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateThemeDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        },
+        "put": {
+          "tags": [
+            "Themes"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThemeDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThemeDto"
+                }
+              },
+              "application/*+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThemeDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/themes/{id}": {
+        "get": {
+          "tags": [
+            "Themes"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "style": "simple",
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "Themes"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "style": "simple",
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      },
+      "/users": {
+        "post": {
+          "tags": [
+            "User"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateUserDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateUserDto"
+                }
+              },
+              "application/*+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateUserDto"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Success"
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "AuthorDto": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "nullable": true
+            },
+            "id": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          "additionalProperties": false
+        },
+        "CreateAuthorDto": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "CreateBookDto": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "nullable": true
+            },
+            "authorIds": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "nullable": true
+            },
+            "themeIds": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "nullable": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "CreateThemeDto": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "CreateUserDto": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string",
+              "nullable": true
+            },
+            "password": {
+              "type": "string",
+              "nullable": true
+            },
+            "username": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "ThemeDto": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "nullable": true
+            },
+            "id": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          "additionalProperties": false
+        },
+        "UpdateBookDto": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "nullable": true
+            },
+            "authorIds": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "nullable": true
+            },
+            "themeIds": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "nullable": true
+            },
+            "id": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  }
